@@ -56,24 +56,24 @@ export default {
 
   computed: {
 
-    variables() {
+    calculatedInputs() {
       return this.inputs.map((input) => input.value);
     },
 
     addition() {
-      return this.variables.reduce((acc, input) => acc + input);
+      return this.calculatedInputs.reduce((acc, input) => acc + input);
     },
 
     substraction() {
-      return this.variables.reduce((acc, input) => acc - input);
+      return this.calculatedInputs.reduce((acc, input) => acc - input);
     },
 
     division() {
-      return this.variables.reduce((acc, input) => acc / input);
+      return this.calculatedInputs.reduce((acc, input) => acc / input);
     },
 
     multiplication() {
-      return this.variables.reduce((acc, input) => acc * input);
+      return this.calculatedInputs.reduce((acc, input) => acc * input);
     },
 
     calcResult() {
