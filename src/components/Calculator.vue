@@ -11,15 +11,19 @@
 
   <!-- Operator -->
   <div class="operator-group">
-    <button @click="setOperator('addition')" class="operator-btn">+</button>
-    <button @click="setOperator('substraction')" class="operator-btn">-</button>
-    <button @click="setOperator('multiplication')" class="operator-btn">
+    <button @click="calculateResult('addition')" class="operator-btn">+</button>
+    <button @click="calculateResult('substraction')" class="operator-btn">
+      -
+    </button>
+    <button @click="calculateResult('multiplication')" class="operator-btn">
       x
     </button>
-    <button @click="setOperator('division')" class="operator-btn">/</button>
+    <button @click="calculateResult('division')" class="operator-btn">/</button>
   </div>
 
   <hr />
+
+  <p class="error-message" v-if="hasError">{{ errorMessage }}</p>
 
   <div class="result-box">
     <p>Hasil</p>
@@ -52,6 +56,11 @@ export default {
       ],
 
       selectedOperator: '',
+
+      hasError: false,
+      errorMessage: 'Err: Two active inputs required.',
+
+      result: 0,
     };
   },
 
@@ -93,6 +102,14 @@ export default {
   methods: {
     setOperator(operator) {
       this.selectedOperator = operator;
+    },
+
+    calculateResult(operation) {
+      this.setOperator(operation);
+
+      this.hasError = this.calculatedInputs.length < 2;
+
+      this.result = this[operation];
     },
   },
 };
