@@ -120,12 +120,12 @@ export default {
   },
 
   methods: {
-    setOperator(operator) {
+    setOperation(operator) {
       this.selectedOperation = operator;
     },
 
     calculateResult(operation) {
-      this.setOperator(operation);
+      this.setOperation(operation);
 
       this.hasError = this.calculatedInputs.length < 2;
 
