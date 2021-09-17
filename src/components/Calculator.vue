@@ -1,34 +1,35 @@
 <template>
-  <!-- Input -->
-  <div v-for="input in inputs" :key="input.id" class="input-group">
-    <input
-      @focus="$event.target.select()"
-      v-model.number="input.value"
-      class="form-control me-3"
-      type="number"
-    />
-    <input v-model="input.isActive" type="checkbox" />
-  </div>
-
-  <!-- Operator -->
-  <div class="operator-group">
-    <button
-      v-for="operation in operations"
-      :key="operation.name"
-      @click="calculateResult(operation.name)"
-      class="operator-btn"
-    >
-      {{ operation.sign }}
-    </button>
-  </div>
-
-  <hr />
-
-  <p class="error-message" v-if="hasError">{{ errorMessage }}</p>
-
-  <div class="result-box">
-    <p>Hasil</p>
-    <p>{{ calcResult }}</p>
+  <div class="calculator">
+    <div class="calculator-input-group">
+      <div
+        v-for="input in inputs"
+        :key="input.id"
+        class="calculator-input-item"
+      >
+        <div style="width: 25%; display: flex; justify-content: center">
+          <input v-model="input.isActive" type="checkbox" />
+        </div>
+        <input
+          @focus="$event.target.select()"
+          v-model.number="input.value"
+          type="number"
+        />
+      </div>
+    </div>
+    <div class="calculator-keys">
+      <button
+        v-for="operation in operations"
+        :key="operation.name"
+        @click="calculateResult(operation.name)"
+        :class="{ 'is-active': selectedOperation === operation.name }"
+      >
+        {{ operation.sign }}
+      </button>
+    </div>
+    <div class="calculator-display">
+      <p class="error-message" v-if="hasError">{{ errorMessage }}</p>
+      <span v-if="!hasError">{{ result }}</span>
+    </div>
   </div>
 </template>
 
@@ -78,14 +79,13 @@ export default {
       selectedOperation: '',
 
       hasError: false,
-      errorMessage: 'Err: Two active inputs required.',
+      errorMessage: 'Error: At least two active inputs required.',
 
       result: 0,
     };
   },
 
   computed: {
-
     calculatedInputs() {
       return this.inputs.filter((input) => input.isActive).map((input) => input.value);
     },
@@ -113,9 +113,6 @@ export default {
         ? this.calculatedInputs.reduce((acc, input) => acc * input)
         : 0;
     },
-    calcResult() {
-      return this.selectedOperation ? this[this.selectedOperation] : 0;
-    },
 
   },
 
@@ -136,34 +133,101 @@ export default {
 </script>
 
 <style>
-  .input-group {
-    display: flex;
-    margin-bottom: 0.75rem;
+  input,
+  button {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    outline: none;
   }
 
-  .input-group .form-control {
-    width: 100%;
-    padding: 0.5rem;
+  :root {
+    font-family: Helvetica, Arial, sans-serif;
   }
 
-  .operator-group {
+  html {
+    box-sizing: border-box;
+    font-size: 175%;
+    font-weight: 300;
+    line-height: 1.3;
+  }
+
+  body {
+    align-items: center;
     display: flex;
-    justify-content: space-between;
+    height: 100vh;
+    justify-content: center;
+  }
+
+  input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .calculator {
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 2rem;
-    margin-bottom: 2rem;
+    max-width: 15rem;
   }
 
-  .operator-btn {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .result-box {
+  .calculator-input-item {
     display: flex;
-    justify-content: space-between;
+    border-bottom: 1px solid #999;
   }
 
-  .me-3 {
-    margin-right: 1rem;
+  .calculator-input-item input[type="checkbox"] {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .calculator-input-item input[type="number"] {
+    font-size: 18px;
+    text-align: right;
+    padding: 0.5rem 0.75rem;
+    width: 75%;
+  }
+
+  .calculator-display {
+    background-color: #222222;
+    color: #fff;
+    font-size: 1.7rem;
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+
+  .calculator-display .error-message {
+    font-size: 15px;
+    color: rgb(251, 104, 104);
+  }
+
+  .calculator-keys {
+    background-color: #999;
+    display: flex;
+    grid-gap: 1px;
+  }
+
+  .calculator-keys > *:hover {
+    opacity: 0.8;
+  }
+
+  .calculator-keys > *.is-active {
+    opacity: 0.7;
+  }
+
+  .calculator-keys > * {
+    background-color: rgb(212, 211, 211);
+    padding: 0.5rem 1.25rem;
+    position: relative;
+    text-align: center;
+    width: 25%;
   }
 </style>
