@@ -14,9 +14,3 @@ export default {
   },
 };
 </script>
-
-<style>
-  .main {
-    max-width: 240px;
-  }
-</style>
