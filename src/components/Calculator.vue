@@ -5,10 +5,8 @@
       v-model.number="input.value"
       class="form-control me-3"
       type="number"
-      name=""
-      id=""
     />
-    <input type="checkbox" name="" id="" />
+    <input v-model="input.isActive" type="checkbox" />
   </div>
 
   <!-- Operator -->
@@ -39,14 +37,17 @@ export default {
         {
           id: 1,
           value: 0,
+          isActive: false,
         },
         {
           id: 2,
           value: 0,
+          isActive: false,
         },
         {
           id: 5,
           value: 0,
+          isActive: false,
         },
       ],
 
@@ -57,25 +58,32 @@ export default {
   computed: {
 
     calculatedInputs() {
-      return this.inputs.map((input) => input.value);
+      return this.inputs.filter((input) => input.isActive).map((input) => input.value);
     },
 
     addition() {
-      return this.calculatedInputs.reduce((acc, input) => acc + input);
+      return this.calculatedInputs.length
+        ? this.calculatedInputs.reduce((acc, input) => acc + input)
+        : 0;
     },
 
     substraction() {
-      return this.calculatedInputs.reduce((acc, input) => acc - input);
+      return this.calculatedInputs.length
+        ? this.calculatedInputs.reduce((acc, input) => acc - input)
+        : 0;
     },
 
     division() {
-      return this.calculatedInputs.reduce((acc, input) => acc / input);
+      return this.calculatedInputs.length
+        ? this.calculatedInputs.reduce((acc, input) => acc / input)
+        : 0;
     },
 
     multiplication() {
-      return this.calculatedInputs.reduce((acc, input) => acc * input);
+      return this.calculatedInputs.length
+        ? this.calculatedInputs.reduce((acc, input) => acc * input)
+        : 0;
     },
-
     calcResult() {
       return this.selectedOperator ? this[this.selectedOperator] : 0;
     },
