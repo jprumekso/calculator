@@ -2,6 +2,7 @@
   <!-- Input -->
   <div v-for="input in inputs" :key="input.id" class="input-group">
     <input
+      @focus="$event.target.select()"
       v-model.number="input.value"
       class="form-control me-3"
       type="number"
