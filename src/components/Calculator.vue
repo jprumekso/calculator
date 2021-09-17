@@ -11,14 +11,14 @@
 
   <!-- Operator -->
   <div class="operator-group">
-    <button @click="calculateResult('addition')" class="operator-btn">+</button>
-    <button @click="calculateResult('substraction')" class="operator-btn">
-      -
+    <button
+      v-for="operation in operations"
+      :key="operation.name"
+      @click="calculateResult(operation.name)"
+      class="operator-btn"
+    >
+      {{ operation.sign }}
     </button>
-    <button @click="calculateResult('multiplication')" class="operator-btn">
-      x
-    </button>
-    <button @click="calculateResult('division')" class="operator-btn">/</button>
   </div>
 
   <hr />
@@ -55,7 +55,26 @@ export default {
         },
       ],
 
-      selectedOperator: '',
+      operations: [
+        {
+          name: 'addition',
+          sign: '+',
+        },
+        {
+          name: 'substraction',
+          sign: '-',
+        },
+        {
+          name: 'multiplication',
+          sign: '*',
+        },
+        {
+          name: 'division',
+          sign: '/',
+        },
+      ],
+
+      selectedOperation: '',
 
       hasError: false,
       errorMessage: 'Err: Two active inputs required.',
@@ -94,14 +113,14 @@ export default {
         : 0;
     },
     calcResult() {
-      return this.selectedOperator ? this[this.selectedOperator] : 0;
+      return this.selectedOperation ? this[this.selectedOperation] : 0;
     },
 
   },
 
   methods: {
     setOperator(operator) {
-      this.selectedOperator = operator;
+      this.selectedOperation = operator;
     },
 
     calculateResult(operation) {
